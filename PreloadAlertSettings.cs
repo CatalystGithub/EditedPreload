@@ -14,7 +14,6 @@ namespace EditedPreload
             Exiles = new ToggleNode(false);
             Strongboxes = new ToggleNode(false);
             PerandusBoxes = new ToggleNode(false);
-            Essence = new ToggleNode(false);
             CorruptedArea = new ToggleNode(false);
             CorruptedTitle = new ToggleNode(false);
             Bestiary = new ToggleNode(true);
@@ -23,32 +22,6 @@ namespace EditedPreload
             DefaultTextColor = new ColorBGRA(210, 210, 210, 255);
             AreaTextColor = new ColorBGRA(150, 200, 250, 255);
             CorruptedAreaColor = new ColorBGRA(208, 31, 144, 255);
-
-            RemnantOfCorruption = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfAnger = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfHatred = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfWrath = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfMisery = new ColorBGRA(208, 31, 144, 255);
-            EssenceOfTorment = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfFear = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfSuffering = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfEnvy = new ColorBGRA(208, 31, 144, 255);
-            EssenceOfZeal = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfLoathing = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfScorn = new ColorBGRA(208, 31, 144, 255);
-            EssenceOfSorrow = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfContempt = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfRage = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfDread = new ColorBGRA(208, 31, 144, 255);
-            EssenceOfGreed = new ColorBGRA(208, 31, 144, 255);
-            EssenceOfWoe = new ColorBGRA(208, 31, 144, 255);
-            EssenceOfDoubt = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfSpite = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfHysteria = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfInsanity = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfHorror = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfDelirium = new ColorBGRA(255, 255, 0, 255);
-            EssenceOfAnguish = new ColorBGRA(255, 255, 0, 255);
 
             CadiroTrader = new ColorBGRA(255, 128, 0, 255);
             PerandusChestStandard = new ColorBGRA(153, 255, 51, 255);
@@ -130,32 +103,7 @@ namespace EditedPreload
         public ToggleNode ParallelParsing { get; set; } = new ToggleNode(true);
         public ToggleNode LoadOnlyMetadata { get; set; } = new ToggleNode(true);
         public ColorNode CadiroTrader { get; set; }
-        public ToggleNode Essence { get; set; }
-        public ColorNode RemnantOfCorruption { get; set; }
-        public ColorNode EssenceOfAnger { get; set; }
-        public ColorNode EssenceOfHatred { get; set; }
-        public ColorNode EssenceOfWrath { get; set; }
-        public ColorNode EssenceOfMisery { get; set; }
-        public ColorNode EssenceOfTorment { get; set; }
-        public ColorNode EssenceOfFear { get; set; }
-        public ColorNode EssenceOfSuffering { get; set; }
-        public ColorNode EssenceOfEnvy { get; set; }
-        public ColorNode EssenceOfZeal { get; set; }
-        public ColorNode EssenceOfLoathing { get; set; }
-        public ColorNode EssenceOfScorn { get; set; }
-        public ColorNode EssenceOfSorrow { get; set; }
-        public ColorNode EssenceOfContempt { get; set; }
-        public ColorNode EssenceOfRage { get; set; }
-        public ColorNode EssenceOfDread { get; set; }
-        public ColorNode EssenceOfGreed { get; set; }
-        public ColorNode EssenceOfWoe { get; set; }
-        public ColorNode EssenceOfDoubt { get; set; }
-        public ColorNode EssenceOfSpite { get; set; }
-        public ColorNode EssenceOfHysteria { get; set; }
-        public ColorNode EssenceOfInsanity { get; set; }
-        public ColorNode EssenceOfHorror { get; set; }
-        public ColorNode EssenceOfDelirium { get; set; }
-        public ColorNode EssenceOfAnguish { get; set; }
+
         public ColorNode PerandusChestStandard { get; set; }
         public ColorNode PerandusChestRarity { get; set; }
         public ColorNode PerandusChestQuantity { get; set; }

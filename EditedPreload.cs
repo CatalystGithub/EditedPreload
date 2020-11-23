@@ -22,7 +22,7 @@ namespace EditedPreload
         public string Name = "Edited Plugin";
         private string PRELOAD_ALERTS => Path.Combine(DirectoryFullName,"config","preload_alerts.txt");
         private string PRELOAD_ALERTS_PERSONAL => Path.Combine(DirectoryFullName, "config", "preload_alerts_personal.txt");
-        public static Dictionary<string, PreloadConfigLine> Essences;
+
         public static Dictionary<string, PreloadConfigLine> PerandusLeague;
         public static Dictionary<string, PreloadConfigLine> Strongboxes;
         public static Dictionary<string, PreloadConfigLine> Preload;
@@ -49,49 +49,9 @@ namespace EditedPreload
             Order = -40;            
         }
 
+        // Ekranın üst köşesindeki alert listesi
         private Dictionary<string, PreloadConfigLine> alerts { get; } = new Dictionary<string, PreloadConfigLine>();
         private Action<string, Color> AddPreload => ExternalPreloads;
-
-        //Need more test because different result with old method. Most of diff its Art/ and others but sometimes see Metadata/parti...Probably async loads
-        private void ParseByFiles(Dictionary<string, FileInformation> dictionary)
-        {
-            if (working) return;
-            working = true;
-
-            Task.Run(() =>
-            {
-                debugInformation.TickAction(() =>
-                {
-                    if (Settings.ParallelParsing)
-                    {
-                        Parallel.ForEach(dictionary, pair =>
-                        {
-                            var text = pair.Key;
-                            if (Settings.LoadOnlyMetadata && text[0] != 'M') return;
-                            if (text.Contains("@")) text = text.Split('@')[0];
-                            CheckForPreload(text);
-                        });
-                    }
-                    else
-                    {
-                        foreach (var pair in dictionary)
-                        {
-                            var text = pair.Key;
-                            if (Settings.LoadOnlyMetadata && text[0] != 'M') continue;
-                            if (text.Contains("@")) text = text.Split('@')[0];
-                            CheckForPreload(text);
-                        }
-                    }
-
-                    lock (_locker)
-                    {
-                        DrawAlerts = alerts.OrderBy(x => x.Value.Text).Select(x => x.Value).ToList();
-                    }
-                });
-
-                working = false;
-            });
-        }
 
         public override void DrawSettings()
         {
@@ -404,106 +364,6 @@ namespace EditedPreload
 
         private void SetupPredefinedConfigs()
         {
-            Essences = new Dictionary<string, PreloadConfigLine>
-            {
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonMeteorFirestorm",
-                    new PreloadConfigLine {Text = "Essence of Anguish", FastColor = () => Settings.EssenceOfAnguish}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonFirePulse",
-                    new PreloadConfigLine {Text = "Essence of Anger", FastColor = () => Settings.EssenceOfAnger}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonColdPulse",
-                    new PreloadConfigLine {Text = "Essence of Hatred", FastColor = () => Settings.EssenceOfHatred}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonLightningPulse",
-                    new PreloadConfigLine {Text = "Essence of Wrath", FastColor = () => Settings.EssenceOfWrath}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonChaosDegenPulse",
-                    new PreloadConfigLine {Text = "Essence of Misery (Suggest: Corruption)", FastColor = () => Settings.EssenceOfMisery}
-                }, //Suggest Corruption
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonSummonOrbOfStormsDaemon",
-                    new PreloadConfigLine {Text = "Essence of Torment", FastColor = () => Settings.EssenceOfTorment}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonSummonGhost",
-                    new PreloadConfigLine {Text = "Essence of Fear", FastColor = () => Settings.EssenceOfFear}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonFrostBomb",
-                    new PreloadConfigLine {Text = "Essence of Suffering", FastColor = () => Settings.EssenceOfSuffering}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonGrab",
-                    new PreloadConfigLine {Text = "Essence of Envy (Suggest: Corruption)", FastColor = () => Settings.EssenceOfEnvy}
-                }, //Suggest Corruption
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonBuffToParentCasterDodge",
-                    new PreloadConfigLine {Text = "Essence of Zeal", FastColor = () => Settings.EssenceOfZeal}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonBuffToParentCasterDamageTaken",
-                    new PreloadConfigLine {Text = "Essence of Loathing", FastColor = () => Settings.EssenceOfLoathing}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonBuffToParentCasterCrit",
-                    new PreloadConfigLine {Text = "Essence of Scorn (Suggest: Corruption)", FastColor = () => Settings.EssenceOfScorn}
-                }, //Suggest Corruption
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonTotemGroundEffectVortex",
-                    new PreloadConfigLine {Text = "Essence of Sorrow", FastColor = () => Settings.EssenceOfSorrow}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonSummonKaruiSpirit",
-                    new PreloadConfigLine {Text = "Essence of Contempt", FastColor = () => Settings.EssenceOfContempt}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonFireRuneTrap",
-                    new PreloadConfigLine {Text = "Essence of Rage", FastColor = () => Settings.EssenceOfRage}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonSummonChaosGolem",
-                    new PreloadConfigLine {Text = "Essence of Dread (Suggest: Corruption)", FastColor = () => Settings.EssenceOfDread}
-                }, //Suggest Corruption
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonBloodProjectileDaemon",
-                    new PreloadConfigLine {Text = "Essence of Greed", FastColor = () => Settings.EssenceOfGreed}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonSummonLivingCrystals",
-                    new PreloadConfigLine {Text = "Essence of Woe", FastColor = () => Settings.EssenceOfWoe}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonSummonSpiders",
-                    new PreloadConfigLine {Text = "Essence of Doubt", FastColor = () => Settings.EssenceOfDoubt}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonTotemGroundEffectShocked",
-                    new PreloadConfigLine {Text = "Essence of Spite", FastColor = () => Settings.EssenceOfSpite}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonMadness1",
-                    new PreloadConfigLine {Text = "Essence of Hysteria", FastColor = () => Settings.EssenceOfHysteria}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonInsanity1",
-                    new PreloadConfigLine {Text = "Essence of Insanity", FastColor = () => Settings.EssenceOfInsanity}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonHorror1",
-                    new PreloadConfigLine {Text = "Essence of Horror", FastColor = () => Settings.EssenceOfHorror}
-                },
-                {
-                    "Metadata/Monsters/Daemon/EssenceDaemonTerror1_",
-                    new PreloadConfigLine {Text = "Essence of Delirium", FastColor = () => Settings.EssenceOfDelirium}
-                }
-            };
-
             PerandusLeague = new Dictionary<string, PreloadConfigLine>
             {
                 {
@@ -790,45 +650,6 @@ namespace EditedPreload
                 }
 
                 return;
-            }
-
-            if (Settings.Essence)
-            {
-                var essence_alert = Essences.Where(kv => text.StartsWith(kv.Key, StringComparison.OrdinalIgnoreCase)).Select(kv => kv.Value)
-                    .FirstOrDefault();
-
-                if (essence_alert != null)
-                {
-                    essencefound = true;
-
-                    if (alerts.ContainsKey("Remnant of Corruption"))
-
-                        //TODO: TEST ESSENCE
-                    {
-                        lock (_locker)
-                        {
-                            alerts.Remove("Remnant of Corruption");
-                        }
-                    }
-
-                    lock (_locker)
-                    {
-                        alerts[essence_alert.Text] = essence_alert;
-                    }
-
-                    return;
-                }
-
-                if (!essencefound && text.Contains("MiniMonolith"))
-                {
-                    lock (_locker)
-                    {
-                        alerts["Remnant of Corruption"] = new PreloadConfigLine
-                        {
-                            Text = "Remnant of Corruption", FastColor = () => Settings.RemnantOfCorruption
-                        };
-                    }
-                }
             }
 
             var perandus_alert = PerandusLeague.Where(kv => text.StartsWith(kv.Key, StringComparison.OrdinalIgnoreCase))
