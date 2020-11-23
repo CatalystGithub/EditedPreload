@@ -19,6 +19,7 @@ namespace EditedPreload
 {
     public class EditedPreload : BaseSettingsPlugin<PreloadAlertSettings>
     {
+        public string Name = "Edited Plugin";
         private string PRELOAD_ALERTS => Path.Combine(DirectoryFullName,"config","preload_alerts.txt");
         private string PRELOAD_ALERTS_PERSONAL => Path.Combine(DirectoryFullName, "config", "preload_alerts_personal.txt");
         public static Dictionary<string, PreloadConfigLine> Essences;
