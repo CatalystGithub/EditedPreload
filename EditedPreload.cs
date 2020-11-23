@@ -46,7 +46,7 @@ namespace EditedPreload
 
         public EditedPreload()
         {
-            Order = -40;
+            //Order = -40;
         }
 
         // Ekranın üst köşesindeki alert listesi
