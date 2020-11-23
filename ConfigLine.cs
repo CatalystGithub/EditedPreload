@@ -3,7 +3,7 @@ using SharpDX;
 
 namespace EditedPreload
 {
-    public class PreloadConfigLine : ConfigLineBase
+    public class ConfigLine : ConfigLineBase
     {
         public Func<Color> FastColor;
     }

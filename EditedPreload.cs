@@ -17,29 +17,29 @@ using Vector2 = System.Numerics.Vector2;
 
 namespace EditedPreload
 {
-    public class EditedPreload : BaseSettingsPlugin<PreloadAlertSettings>
+    public class EditedPreload : BaseSettingsPlugin<PluginSettings>
     {
         public string Name = "Edited Plugin";
         private string PRELOAD_ALERTS => Path.Combine(DirectoryFullName, "config", "preload_alerts.txt");
         private string PRELOAD_ALERTS_PERSONAL => Path.Combine(DirectoryFullName, "config", "preload_alerts_personal.txt");
 
-        public static Dictionary<string, PreloadConfigLine> PerandusLeague;
-        public static Dictionary<string, PreloadConfigLine> Strongboxes;
-        public static Dictionary<string, PreloadConfigLine> Preload;
-        public static Dictionary<string, PreloadConfigLine> Bestiary;
+        public static Dictionary<string, ConfigLine> PerandusLeague;
+        public static Dictionary<string, ConfigLine> Strongboxes;
+        public static Dictionary<string, ConfigLine> Preload;
+        public static Dictionary<string, ConfigLine> Bestiary;
         public static Color AreaNameColor;
         private readonly object _locker = new object();
-        private Dictionary<string, PreloadConfigLine> alertStrings;
+        private Dictionary<string, ConfigLine> alertStrings;
         private bool canRender;
         private DebugInformation debugInformation;
-        private List<PreloadConfigLine> DrawAlerts = new List<PreloadConfigLine>();
+        private List<ConfigLine> DrawAlerts = new List<ConfigLine>();
         private bool essencefound;
         private readonly List<long> filesPtr = new List<long>();
         private bool foundSpecificPerandusChest;
         private bool isLoading;
         private Vector2 lastLine;
         private float maxWidth;
-        private Dictionary<string, PreloadConfigLine> personalAlertStrings;
+        private Dictionary<string, ConfigLine> personalAlertStrings;
         private readonly List<string> PreloadDebug = new List<string>();
         private Action PreloadDebugAction;
         private bool working;
@@ -50,7 +50,7 @@ namespace EditedPreload
         }
 
         // Ekranın üst köşesindeki alert listesi
-        private Dictionary<string, PreloadConfigLine> alerts { get; } = new Dictionary<string, PreloadConfigLine>();
+        private Dictionary<string, ConfigLine> alerts { get; } = new Dictionary<string, ConfigLine>();
         private Action<string, Color> AddPreload => ExternalPreloads;
 
         public override void DrawSettings()
@@ -163,7 +163,7 @@ namespace EditedPreload
 
                     if (!working && tries < 20)
                     {
-                        alerts.Add(text, new PreloadConfigLine { Text = text, FastColor = () => color });
+                        alerts.Add(text, new ConfigLine { Text = text, FastColor = () => color });
 
                         lock (_locker)
                         {
@@ -174,7 +174,7 @@ namespace EditedPreload
             }
             else
             {
-                alerts.Add(text, new PreloadConfigLine { Text = text, FastColor = () => color });
+                alerts.Add(text, new ConfigLine { Text = text, FastColor = () => color });
 
                 lock (_locker)
                 {
@@ -347,11 +347,11 @@ namespace EditedPreload
             GameController.LeftPanel.StartDrawPoint = startDrawPoint;
         }
 
-        public Dictionary<string, PreloadConfigLine> LoadConfig(string path)
+        public Dictionary<string, ConfigLine> LoadConfig(string path)
         {
             return LoadConfigBase(path, 3).ToDictionary(line => line[0], line =>
             {
-                var preloadAlerConfigLine = new PreloadConfigLine { Text = line[1], Color = line.ConfigColorValueExtractor(2) };
+                var preloadAlerConfigLine = new ConfigLine { Text = line[1], Color = line.ConfigColorValueExtractor(2) };
                 return preloadAlerConfigLine;
             });
         }
@@ -364,260 +364,260 @@ namespace EditedPreload
 
         private void SetupPredefinedConfigs()
         {
-            PerandusLeague = new Dictionary<string, PreloadConfigLine>
+            PerandusLeague = new Dictionary<string, ConfigLine>
             {
                 {
                     "Metadata/Chests/PerandusChests/PerandusChestStandard",
-                    new PreloadConfigLine {Text = "Perandus Chest", FastColor = () => Settings.PerandusChestStandard}
+                    new ConfigLine {Text = "Perandus Chest", FastColor = () => Settings.PerandusChestStandard}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusChestRarity",
-                    new PreloadConfigLine {Text = "Perandus Cache", FastColor = () => Settings.PerandusChestRarity}
+                    new ConfigLine {Text = "Perandus Cache", FastColor = () => Settings.PerandusChestRarity}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusChestQuantity",
-                    new PreloadConfigLine {Text = "Perandus Hoard", FastColor = () => Settings.PerandusChestQuantity}
+                    new ConfigLine {Text = "Perandus Hoard", FastColor = () => Settings.PerandusChestQuantity}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusChestCoins",
-                    new PreloadConfigLine {Text = "Perandus Coffer", FastColor = () => Settings.PerandusChestCoins}
+                    new ConfigLine {Text = "Perandus Coffer", FastColor = () => Settings.PerandusChestCoins}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusChestJewellery",
-                    new PreloadConfigLine {Text = "Perandus Jewellery Box", FastColor = () => Settings.PerandusChestJewellery}
+                    new ConfigLine {Text = "Perandus Jewellery Box", FastColor = () => Settings.PerandusChestJewellery}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusChestGems",
-                    new PreloadConfigLine {Text = "Perandus Safe", FastColor = () => Settings.PerandusChestGems}
+                    new ConfigLine {Text = "Perandus Safe", FastColor = () => Settings.PerandusChestGems}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusChestCurrency",
-                    new PreloadConfigLine {Text = "Perandus Treasury", FastColor = () => Settings.PerandusChestCurrency}
+                    new ConfigLine {Text = "Perandus Treasury", FastColor = () => Settings.PerandusChestCurrency}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusChestInventory",
-                    new PreloadConfigLine {Text = "Perandus Wardrobe", FastColor = () => Settings.PerandusChestInventory}
+                    new ConfigLine {Text = "Perandus Wardrobe", FastColor = () => Settings.PerandusChestInventory}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusChestDivinationCards",
-                    new PreloadConfigLine {Text = "Perandus Catalogue", FastColor = () => Settings.PerandusChestDivinationCards}
+                    new ConfigLine {Text = "Perandus Catalogue", FastColor = () => Settings.PerandusChestDivinationCards}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusChestKeepersOfTheTrove",
-                    new PreloadConfigLine {Text = "Perandus Trove", FastColor = () => Settings.PerandusChestKeepersOfTheTrove}
+                    new ConfigLine {Text = "Perandus Trove", FastColor = () => Settings.PerandusChestKeepersOfTheTrove}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusChestUniqueItem",
-                    new PreloadConfigLine {Text = "Perandus Locker", FastColor = () => Settings.PerandusChestUniqueItem}
+                    new ConfigLine {Text = "Perandus Locker", FastColor = () => Settings.PerandusChestUniqueItem}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusChestMaps",
-                    new PreloadConfigLine {Text = "Perandus Archive", FastColor = () => Settings.PerandusChestMaps}
+                    new ConfigLine {Text = "Perandus Archive", FastColor = () => Settings.PerandusChestMaps}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusChestFishing",
-                    new PreloadConfigLine {Text = "Perandus Tackle Box", FastColor = () => Settings.PerandusChestFishing}
+                    new ConfigLine {Text = "Perandus Tackle Box", FastColor = () => Settings.PerandusChestFishing}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusManorUniqueChest",
-                    new PreloadConfigLine {Text = "Cadiro's Locker", FastColor = () => Settings.PerandusManorUniqueChest}
+                    new ConfigLine {Text = "Cadiro's Locker", FastColor = () => Settings.PerandusManorUniqueChest}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusManorCurrencyChest",
-                    new PreloadConfigLine {Text = "Cadiro's Treasury", FastColor = () => Settings.PerandusManorCurrencyChest}
+                    new ConfigLine {Text = "Cadiro's Treasury", FastColor = () => Settings.PerandusManorCurrencyChest}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusManorMapsChest",
-                    new PreloadConfigLine {Text = "Cadiro's Archive", FastColor = () => Settings.PerandusManorMapsChest}
+                    new ConfigLine {Text = "Cadiro's Archive", FastColor = () => Settings.PerandusManorMapsChest}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusManorJewelryChest",
-                    new PreloadConfigLine {Text = "Cadiro's Jewellery Box", FastColor = () => Settings.PerandusManorJewelryChest}
+                    new ConfigLine {Text = "Cadiro's Jewellery Box", FastColor = () => Settings.PerandusManorJewelryChest}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusManorDivinationCardsChest",
-                    new PreloadConfigLine {Text = "Cadiro's Catalogue", FastColor = () => Settings.PerandusManorDivinationCardsChest}
+                    new ConfigLine {Text = "Cadiro's Catalogue", FastColor = () => Settings.PerandusManorDivinationCardsChest}
                 },
                 {
                     "Metadata/Chests/PerandusChests/PerandusManorLostTreasureChest",
-                    new PreloadConfigLine {Text = "Grand Perandus Vault", FastColor = () => Settings.PerandusManorLostTreasureChest}
+                    new ConfigLine {Text = "Grand Perandus Vault", FastColor = () => Settings.PerandusManorLostTreasureChest}
                 }
             };
 
-            Strongboxes = new Dictionary<string, PreloadConfigLine>
+            Strongboxes = new Dictionary<string, ConfigLine>
             {
                 {
                     "Metadata/Chests/StrongBoxes/Arcanist",
-                    new PreloadConfigLine {Text = "Arcanist's Strongbox", FastColor = () => Settings.ArcanistStrongbox}
+                    new ConfigLine {Text = "Arcanist's Strongbox", FastColor = () => Settings.ArcanistStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/Artisan",
-                    new PreloadConfigLine {Text = "Artisan's Strongbox", FastColor = () => Settings.ArtisanStrongbox}
+                    new ConfigLine {Text = "Artisan's Strongbox", FastColor = () => Settings.ArtisanStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/Cartographer",
-                    new PreloadConfigLine {Text = "Cartographer's Strongbox", FastColor = () => Settings.CartographerStrongbox}
+                    new ConfigLine {Text = "Cartographer's Strongbox", FastColor = () => Settings.CartographerStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/Diviner",
-                    new PreloadConfigLine {Text = "Diviner's Strongbox", FastColor = () => Settings.DivinerStrongbox}
+                    new ConfigLine {Text = "Diviner's Strongbox", FastColor = () => Settings.DivinerStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/StrongboxDivination",
-                    new PreloadConfigLine {Text = "Diviner's Strongbox", FastColor = () => Settings.DivinerStrongbox}
+                    new ConfigLine {Text = "Diviner's Strongbox", FastColor = () => Settings.DivinerStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/Gemcutter",
-                    new PreloadConfigLine {Text = "Gemcutter's Strongbox", FastColor = () => Settings.GemcutterStrongbox}
+                    new ConfigLine {Text = "Gemcutter's Strongbox", FastColor = () => Settings.GemcutterStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/Jeweller",
-                    new PreloadConfigLine {Text = "Jeweller's Strongbox", FastColor = () => Settings.JewellerStrongbox}
+                    new ConfigLine {Text = "Jeweller's Strongbox", FastColor = () => Settings.JewellerStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/Arsenal",
-                    new PreloadConfigLine {Text = "Blacksmith's Strongbox", FastColor = () => Settings.BlacksmithStrongbox}
+                    new ConfigLine {Text = "Blacksmith's Strongbox", FastColor = () => Settings.BlacksmithStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/Armory",
-                    new PreloadConfigLine {Text = "Armourer's Strongbox", FastColor = () => Settings.ArmourerStrongbox}
+                    new ConfigLine {Text = "Armourer's Strongbox", FastColor = () => Settings.ArmourerStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/Ornate",
-                    new PreloadConfigLine {Text = "Ornate Strongbox", FastColor = () => Settings.OrnateStrongbox}
+                    new ConfigLine {Text = "Ornate Strongbox", FastColor = () => Settings.OrnateStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/Large",
-                    new PreloadConfigLine {Text = "Large Strongbox", FastColor = () => Settings.LargeStrongbox}
+                    new ConfigLine {Text = "Large Strongbox", FastColor = () => Settings.LargeStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/Strongbox",
-                    new PreloadConfigLine {Text = "Simple Strongbox", FastColor = () => Settings.SimpleStrongbox}
+                    new ConfigLine {Text = "Simple Strongbox", FastColor = () => Settings.SimpleStrongbox}
                 },
                 {
                     "Metadata/Chests/CopperChests/CopperChestEpic3",
-                    new PreloadConfigLine {Text = "Epic Chest", FastColor = () => Settings.EpicStrongbox}
+                    new ConfigLine {Text = "Epic Chest", FastColor = () => Settings.EpicStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/PerandusBox",
-                    new PreloadConfigLine {Text = "Perandus Strongbox", FastColor = () => Settings.PerandusStrongbox}
+                    new ConfigLine {Text = "Perandus Strongbox", FastColor = () => Settings.PerandusStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/KaomBox",
-                    new PreloadConfigLine {Text = "Kaom Strongbox", FastColor = () => Settings.KaomStrongbox}
+                    new ConfigLine {Text = "Kaom Strongbox", FastColor = () => Settings.KaomStrongbox}
                 },
                 {
                     "Metadata/Chests/StrongBoxes/MalachaisBox",
-                    new PreloadConfigLine {Text = "Malachai Strongbox", FastColor = () => Settings.MalachaiStrongbox}
+                    new ConfigLine {Text = "Malachai Strongbox", FastColor = () => Settings.MalachaiStrongbox}
                 }
             };
 
-            Preload = new Dictionary<string, PreloadConfigLine>
+            Preload = new Dictionary<string, ConfigLine>
             {
-                {"Wild/StrDexInt", new PreloadConfigLine {Text = "Zana, Master Cartographer", FastColor = () => Settings.MasterZana}},
-                {"Wild/Int", new PreloadConfigLine {Text = "Catarina, Master of the Dead", FastColor = () => Settings.MasterCatarina}},
-                {"Wild/Dex", new PreloadConfigLine {Text = "Tora, Master of the Hunt", FastColor = () => Settings.MasterTora}},
-                {"Wild/DexInt", new PreloadConfigLine {Text = "Vorici, Master Assassin", FastColor = () => Settings.MasterVorici}},
-                {"Wild/Str", new PreloadConfigLine {Text = "Haku, Armourmaster", FastColor = () => Settings.MasterHaku}},
-                {"Wild/StrInt", new PreloadConfigLine {Text = "Elreon, Loremaster", FastColor = () => Settings.MasterElreon}},
-                {"Wild/Fish", new PreloadConfigLine {Text = "Krillson, Master Fisherman", FastColor = () => Settings.MasterKrillson}},
+                {"Wild/StrDexInt", new ConfigLine {Text = "Zana, Master Cartographer", FastColor = () => Settings.MasterZana}},
+                {"Wild/Int", new ConfigLine {Text = "Catarina, Master of the Dead", FastColor = () => Settings.MasterCatarina}},
+                {"Wild/Dex", new ConfigLine {Text = "Tora, Master of the Hunt", FastColor = () => Settings.MasterTora}},
+                {"Wild/DexInt", new ConfigLine {Text = "Vorici, Master Assassin", FastColor = () => Settings.MasterVorici}},
+                {"Wild/Str", new ConfigLine {Text = "Haku, Armourmaster", FastColor = () => Settings.MasterHaku}},
+                {"Wild/StrInt", new ConfigLine {Text = "Elreon, Loremaster", FastColor = () => Settings.MasterElreon}},
+                {"Wild/Fish", new ConfigLine {Text = "Krillson, Master Fisherman", FastColor = () => Settings.MasterKrillson}},
                 {
                     "MasterStrDex1",
-                    new PreloadConfigLine {Text = "Vagan, Weaponmaster (2HSword)", FastColor = () => Settings.MasterVagan}
+                    new ConfigLine {Text = "Vagan, Weaponmaster (2HSword)", FastColor = () => Settings.MasterVagan}
                 },
-                {"MasterStrDex2", new PreloadConfigLine {Text = "Vagan, Weaponmaster (Staff)", FastColor = () => Settings.MasterVagan}},
-                {"MasterStrDex3", new PreloadConfigLine {Text = "Vagan, Weaponmaster (Bow)", FastColor = () => Settings.MasterVagan}},
+                {"MasterStrDex2", new ConfigLine {Text = "Vagan, Weaponmaster (Staff)", FastColor = () => Settings.MasterVagan}},
+                {"MasterStrDex3", new ConfigLine {Text = "Vagan, Weaponmaster (Bow)", FastColor = () => Settings.MasterVagan}},
                 {
                     "MasterStrDex4",
-                    new PreloadConfigLine {Text = "Vagan, Weaponmaster (DaggerRapier)", FastColor = () => Settings.MasterVagan}
+                    new ConfigLine {Text = "Vagan, Weaponmaster (DaggerRapier)", FastColor = () => Settings.MasterVagan}
                 },
-                {"MasterStrDex5", new PreloadConfigLine {Text = "Vagan, Weaponmaster (Blunt)", FastColor = () => Settings.MasterVagan}},
+                {"MasterStrDex5", new ConfigLine {Text = "Vagan, Weaponmaster (Blunt)", FastColor = () => Settings.MasterVagan}},
                 {
                     "MasterStrDex6",
-                    new PreloadConfigLine {Text = "Vagan, Weaponmaster (Blades)", FastColor = () => Settings.MasterVagan}
+                    new ConfigLine {Text = "Vagan, Weaponmaster (Blades)", FastColor = () => Settings.MasterVagan}
                 },
                 {
                     "MasterStrDex7",
-                    new PreloadConfigLine {Text = "Vagan, Weaponmaster (SwordAxe)", FastColor = () => Settings.MasterVagan}
+                    new ConfigLine {Text = "Vagan, Weaponmaster (SwordAxe)", FastColor = () => Settings.MasterVagan}
                 },
                 {
                     "MasterStrDex8",
-                    new PreloadConfigLine {Text = "Vagan, Weaponmaster (Punching)", FastColor = () => Settings.MasterVagan}
+                    new ConfigLine {Text = "Vagan, Weaponmaster (Punching)", FastColor = () => Settings.MasterVagan}
                 },
                 {
                     "MasterStrDex9",
-                    new PreloadConfigLine {Text = "Vagan, Weaponmaster (Flickerstrike)", FastColor = () => Settings.MasterVagan}
+                    new ConfigLine {Text = "Vagan, Weaponmaster (Flickerstrike)", FastColor = () => Settings.MasterVagan}
                 },
                 {
                     "MasterStrDex10",
-                    new PreloadConfigLine {Text = "Vagan, Weaponmaster (Elementalist)", FastColor = () => Settings.MasterVagan}
+                    new ConfigLine {Text = "Vagan, Weaponmaster (Elementalist)", FastColor = () => Settings.MasterVagan}
                 },
                 {
                     "MasterStrDex11",
-                    new PreloadConfigLine {Text = "Vagan, Weaponmaster (Cyclone)", FastColor = () => Settings.MasterVagan}
+                    new ConfigLine {Text = "Vagan, Weaponmaster (Cyclone)", FastColor = () => Settings.MasterVagan}
                 },
                 {
                     "MasterStrDex12",
-                    new PreloadConfigLine {Text = "Vagan, Weaponmaster (PhysSpells)", FastColor = () => Settings.MasterVagan}
+                    new ConfigLine {Text = "Vagan, Weaponmaster (PhysSpells)", FastColor = () => Settings.MasterVagan}
                 },
                 {
                     "MasterStrDex13",
-                    new PreloadConfigLine {Text = "Vagan, Weaponmaster (Traps)", FastColor = () => Settings.MasterVagan}
+                    new ConfigLine {Text = "Vagan, Weaponmaster (Traps)", FastColor = () => Settings.MasterVagan}
                 },
                 {
                     "MasterStrDex14",
-                    new PreloadConfigLine {Text = "Vagan, Weaponmaster (RighteousFire)", FastColor = () => Settings.MasterVagan}
+                    new ConfigLine {Text = "Vagan, Weaponmaster (RighteousFire)", FastColor = () => Settings.MasterVagan}
                 },
                 {
                     "MasterStrDex15",
-                    new PreloadConfigLine {Text = "Vagan, Weaponmaster (CastOnHit)", FastColor = () => Settings.MasterVagan}
+                    new ConfigLine {Text = "Vagan, Weaponmaster (CastOnHit)", FastColor = () => Settings.MasterVagan}
                 },
-                {"ExileDuelist1", new PreloadConfigLine {Text = "Exile Torr Olgosso", FastColor = () => Settings.TorrOlgosso}},
-                {"ExileDuelist2", new PreloadConfigLine {Text = "Exile Armios Bell", FastColor = () => Settings.ArmiosBell}},
+                {"ExileDuelist1", new ConfigLine {Text = "Exile Torr Olgosso", FastColor = () => Settings.TorrOlgosso}},
+                {"ExileDuelist2", new ConfigLine {Text = "Exile Armios Bell", FastColor = () => Settings.ArmiosBell}},
                 {
                     "ExileDuelist4",
-                    new PreloadConfigLine {Text = "Exile Zacharie Desmarais", FastColor = () => Settings.ZacharieDesmarais}
+                    new ConfigLine {Text = "Exile Zacharie Desmarais", FastColor = () => Settings.ZacharieDesmarais}
                 },
-                {"ExileDuelist5", new PreloadConfigLine {Text = "Exile Oyra Ona", FastColor = () => Settings.OyraOna}},
-                {"ExileMarauder1", new PreloadConfigLine {Text = "Exile Jonah Unchained", FastColor = () => Settings.JonahUnchained}},
-                {"ExileMarauder2", new PreloadConfigLine {Text = "Exile Damoi Tui", FastColor = () => Settings.DamoiTui}},
+                {"ExileDuelist5", new ConfigLine {Text = "Exile Oyra Ona", FastColor = () => Settings.OyraOna}},
+                {"ExileMarauder1", new ConfigLine {Text = "Exile Jonah Unchained", FastColor = () => Settings.JonahUnchained}},
+                {"ExileMarauder2", new ConfigLine {Text = "Exile Damoi Tui", FastColor = () => Settings.DamoiTui}},
                 {
                     "ExileMarauder3",
-                    new PreloadConfigLine {Text = "Exile Xandro Blooddrinker", FastColor = () => Settings.XandroBlooddrinker}
+                    new ConfigLine {Text = "Exile Xandro Blooddrinker", FastColor = () => Settings.XandroBlooddrinker}
                 },
-                {"ExileMarauder5", new PreloadConfigLine {Text = "Exile Vickas Giantbone", FastColor = () => Settings.VickasGiantbone}},
-                {"ExileMarauder6__", new PreloadConfigLine {Text = "Exile Bolt Brownfur", FastColor = () => Settings.BoltBrownfur}},
-                {"ExileRanger1", new PreloadConfigLine {Text = "Exile Orra Greengate", FastColor = () => Settings.OrraGreengate}},
-                {"ExileRanger2", new PreloadConfigLine {Text = "Exile Thena Moga", FastColor = () => Settings.ThenaMoga}},
-                {"ExileRanger3", new PreloadConfigLine {Text = "Exile Antalie Napora", FastColor = () => Settings.AntalieNapora}},
-                {"ExileRanger5", new PreloadConfigLine {Text = "Exile Ailentia Rac", FastColor = () => Settings.AilentiaRac}},
-                {"ExileScion2", new PreloadConfigLine {Text = "Exile Augustina Solaria", FastColor = () => Settings.AugustinaSolaria}},
-                {"ExileScion3", new PreloadConfigLine {Text = "Exile Lael Furia", FastColor = () => Settings.LaelFuria}},
-                {"ExileScion4", new PreloadConfigLine {Text = "Exile Vanth Agiel", FastColor = () => Settings.VanthAgiel}},
-                {"ExileShadow1_", new PreloadConfigLine {Text = "Exile Ion Darkshroud", FastColor = () => Settings.IonDarkshroud}},
-                {"ExileShadow2", new PreloadConfigLine {Text = "Exile Ash Lessard", FastColor = () => Settings.AshLessard}},
+                {"ExileMarauder5", new ConfigLine {Text = "Exile Vickas Giantbone", FastColor = () => Settings.VickasGiantbone}},
+                {"ExileMarauder6__", new ConfigLine {Text = "Exile Bolt Brownfur", FastColor = () => Settings.BoltBrownfur}},
+                {"ExileRanger1", new ConfigLine {Text = "Exile Orra Greengate", FastColor = () => Settings.OrraGreengate}},
+                {"ExileRanger2", new ConfigLine {Text = "Exile Thena Moga", FastColor = () => Settings.ThenaMoga}},
+                {"ExileRanger3", new ConfigLine {Text = "Exile Antalie Napora", FastColor = () => Settings.AntalieNapora}},
+                {"ExileRanger5", new ConfigLine {Text = "Exile Ailentia Rac", FastColor = () => Settings.AilentiaRac}},
+                {"ExileScion2", new ConfigLine {Text = "Exile Augustina Solaria", FastColor = () => Settings.AugustinaSolaria}},
+                {"ExileScion3", new ConfigLine {Text = "Exile Lael Furia", FastColor = () => Settings.LaelFuria}},
+                {"ExileScion4", new ConfigLine {Text = "Exile Vanth Agiel", FastColor = () => Settings.VanthAgiel}},
+                {"ExileShadow1_", new ConfigLine {Text = "Exile Ion Darkshroud", FastColor = () => Settings.IonDarkshroud}},
+                {"ExileShadow2", new ConfigLine {Text = "Exile Ash Lessard", FastColor = () => Settings.AshLessard}},
                 {
                     "ExileShadow4",
-                    new PreloadConfigLine {Text = "Exile Wilorin Demontamer", FastColor = () => Settings.WilorinDemontamer}
+                    new ConfigLine {Text = "Exile Wilorin Demontamer", FastColor = () => Settings.WilorinDemontamer}
                 },
-                {"ExileShadow5", new PreloadConfigLine {Text = "Exile Ulysses Morvant", FastColor = () => Settings.UlyssesMorvant}},
-                {"ExileTemplar1", new PreloadConfigLine {Text = "Exile Eoin Greyfur", FastColor = () => Settings.EoinGreyfur}},
-                {"ExileTemplar2", new PreloadConfigLine {Text = "Exile Tinevin Highdove", FastColor = () => Settings.TinevinHighdove}},
+                {"ExileShadow5", new ConfigLine {Text = "Exile Ulysses Morvant", FastColor = () => Settings.UlyssesMorvant}},
+                {"ExileTemplar1", new ConfigLine {Text = "Exile Eoin Greyfur", FastColor = () => Settings.EoinGreyfur}},
+                {"ExileTemplar2", new ConfigLine {Text = "Exile Tinevin Highdove", FastColor = () => Settings.TinevinHighdove}},
                 {
                     "ExileTemplar4",
-                    new PreloadConfigLine {Text = "Exile Magnus Stonethorn", FastColor = () => Settings.MagnusStonethorn}
+                    new ConfigLine {Text = "Exile Magnus Stonethorn", FastColor = () => Settings.MagnusStonethorn}
                 },
                 {
                     "ExileTemplar5",
-                    new PreloadConfigLine {Text = "Exile Aurelio Voidsinger", FastColor = () => Settings.AurelioVoidsinger}
+                    new ConfigLine {Text = "Exile Aurelio Voidsinger", FastColor = () => Settings.AurelioVoidsinger}
                 },
-                {"ExileWitch1", new PreloadConfigLine {Text = "Exile Minara Anenima", FastColor = () => Settings.MinaraAnenima}},
-                {"ExileWitch2", new PreloadConfigLine {Text = "Exile Igna Phoenix", FastColor = () => Settings.IgnaPhoenix}},
-                {"ExileWitch4", new PreloadConfigLine {Text = "Exile Dena Lorenni", FastColor = () => Settings.DenaLorenni}}
+                {"ExileWitch1", new ConfigLine {Text = "Exile Minara Anenima", FastColor = () => Settings.MinaraAnenima}},
+                {"ExileWitch2", new ConfigLine {Text = "Exile Igna Phoenix", FastColor = () => Settings.IgnaPhoenix}},
+                {"ExileWitch4", new ConfigLine {Text = "Exile Dena Lorenni", FastColor = () => Settings.DenaLorenni}}
             };
 
             //Old stuff from bestiary league
-            Bestiary = new Dictionary<string, PreloadConfigLine>();
+            Bestiary = new Dictionary<string, ConfigLine>();
         }
 
         private void CheckForPreload(string text)
@@ -645,7 +645,7 @@ namespace EditedPreload
                     // not using corrupted titles, so throw it in a preload alert
                     lock (_locker)
                     {
-                        alerts[text] = new PreloadConfigLine { Text = "Corrupted Area", FastColor = () => Settings.CorruptedAreaColor };
+                        alerts[text] = new ConfigLine { Text = "Corrupted Area", FastColor = () => Settings.CorruptedAreaColor };
                     }
                 }
 
@@ -679,7 +679,7 @@ namespace EditedPreload
             {
                 lock (_locker)
                 {
-                    alerts["Unknown Perandus Chest"] = new PreloadConfigLine
+                    alerts["Unknown Perandus Chest"] = new ConfigLine
                     {
                         Text = "Unknown Perandus Chest",
                         FastColor = () => Settings.PerandusChestStandard

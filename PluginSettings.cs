@@ -4,9 +4,9 @@ using SharpDX;
 
 namespace EditedPreload
 {
-    public class PreloadAlertSettings : ISettings
+    public class PluginSettings : ISettings
     {
-        public PreloadAlertSettings()
+        public PluginSettings()
         {
             Enable = new ToggleNode(true);
             ShowInHideout = new ToggleNode(false);
