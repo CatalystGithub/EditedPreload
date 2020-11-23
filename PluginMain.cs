@@ -17,7 +17,7 @@ using Vector2 = System.Numerics.Vector2;
 
 namespace EditedPreload
 {
-    public class PluginMainTest : BaseSettingsPlugin<PluginSettings>
+    public class PluginMain : BaseSettingsPlugin<PluginSettings>
     {
 
     }
