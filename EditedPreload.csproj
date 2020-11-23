@@ -36,10 +36,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EditedPreload.cs" />
     <Compile Include="ConfigLine.cs" />
+    <Compile Include="PluginMain.cs" />
     <Compile Include="PluginSettings.cs" />
-    <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ExileCore">
@@ -64,6 +63,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="config\preload_alerts.txt" />
     <Content Include="config\preload_alerts_personal.txt" />
