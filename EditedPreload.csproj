@@ -64,9 +64,5 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Content Include="config\preload_alerts.txt" />
-    <Content Include="config\preload_alerts_personal.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
