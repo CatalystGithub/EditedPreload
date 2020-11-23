@@ -6,6 +6,18 @@ namespace EditedPreload
 {
     public class PluginSettings : ISettings
     {
+        public ToggleNode Test1;
+        public ToggleNode Enable { get; set; }
+
+        public PluginSettings()
+        {
+            Enable = new ToggleNode(true);
+            Test1 = new ToggleNode(true);
+        }
+    }
+    /*
+    public class PluginSettings : ISettings
+    {
         public PluginSettings()
         {
             Enable = new ToggleNode(true);
@@ -240,4 +252,5 @@ namespace EditedPreload
         public ColorNode AurelioVoidsinger { get; set; }
         public ToggleNode Bestiary { get; set; }
     }
+*/
 }
